@@ -4,19 +4,23 @@ import id.febimaharani.amphibians.model.Amphibian
 import id.febimaharani.amphibians.network.AmphibiansApiService
 
 /**
- * Repository retrieves amphibian data from underlying data source.
+ * Mengambil data amfibi.
  */
+// TODO 1 : interface repository untuk mengatur pengambilan dataamfibi.
 interface AmphibiansRepository {
-    /** Retrieves list of amphibians from underlying data source */
+    /** ambil daftar amfibi */
+    // TODO 2 : mendefinisikan fungsi mengambil daftar amfibi dari data layer.
     suspend fun getAmphibians(): List<Amphibian>
 }
 
 /**
- * Network Implementation of repository that retrieves amphibian data from underlying data source.
+ * Implementasi repository untuk mengambil data amfibi dari layanan jaringan.
  */
+ // TODO 3 : implementasi repository dengan dependensi ke AmphibiansApiServicce.
 class DefaultAmphibiansRepository(
-    private val amphibiansApiService: AmphibiansApiService
+    private val amphibiansApiService: AmphibiansApiService // TODO 4 : layanan API digunakan untuk mengakses data amfibi.
 ) : AmphibiansRepository {
-    /** Retrieves list of amphibians from underlying data source */
+    /** mengambil daftaramfibi */
+    // TODO 5 : implementasi fungsi getAmphibians untuk mendapatkan data layer network.
     override suspend fun getAmphibians(): List<Amphibian> = amphibiansApiService.getAmphibians()
 }
