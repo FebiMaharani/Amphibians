@@ -17,65 +17,67 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import android.view.View
 
+// warna untuk tema gelap
 private val DarkColorScheme = darkColorScheme(
     background = md_theme_dark_background,
     surface = md_theme_dark_surface,
     surfaceVariant = md_theme_dark_surfaceVariant,
 )
 
+// warna untuk tema terang 
 private val LightColorScheme = lightColorScheme(
     background = md_theme_light_background,
     surface = md_theme_light_surface,
     surfaceVariant = md_theme_light_surfaceVariant,
 )
 
+// fungsi tema utama aplikasi
+// untuk menentukan tema gelap ditentukan berdasarkan pengaturan sistem
+// menentukan apakah warna dinamis untuk android 12+
 @Composable
 fun AmphibiansTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    // Dynamic color in this app is turned off for learning purposes
-    dynamicColor: Boolean = false,
-    content: @Composable () -> Unit
+    darkTheme: Boolean = isSystemInDarkTheme(), // ambil tema gelap dari pengaturan sistem
+    dynamicColor: Boolean = false, // mengatur warna dinamis dinonaktifkan.
+    content: @Composable () -> Unit // konten yang diterapkan.
 ) {
+    // menentukan warna berdasarkan tema dan dukungan warna dinamis
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context) 
         }
-
+        // menggunakan skema warna gelap/terang jika tema gelap tidak di nonaktifkan
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
-    val view = LocalView.current
-    if (!view.isInEditMode) {
+    val view = LocalView.current // ambil tampilan sekarang
+    if (!view.isInEditMode) { // memastikan tidak dalam mode edit
         SideEffect {
-            setUpEdgeToEdge(view, darkTheme)
+            setUpEdgeToEdge(view, darkTheme) // mengatur tampilan edge-to-edge.
         }
     }
 
+    // menerapkan materialTheme dengan skema warna dan typography yang ditentukan
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
-        content = content
+        content = content // konten yang dirender dengan tema.
     )
 }
 
-/**
- * Sets up edge-to-edge for the window of this [view]. The system icon colors are set to either
- * light or dark depending on whether the [darkTheme] is enabled or not.
- */
+// Sets up edge-to-edge untuk jendela [view]. warna ikon di atur light/dark tergantung apakah tema gelap aktif.
 private fun setUpEdgeToEdge(view: View, darkTheme: Boolean) {
-    val window = (view.context as Activity).window
-    WindowCompat.setDecorFitsSystemWindows(window, false)
-    window.statusBarColor = Color.Transparent.toArgb()
+    val window = (view.context as Activity).window // ambil jendela aktivitas sekarang.
+    WindowCompat.setDecorFitsSystemWindows(window, false) // mengatur warna status bar menjadi transparan
+    window.statusBarColor = Color.Transparent.toArgb() // atur warna status bar menjadi transparan
     val navigationBarColor = when {
-        Build.VERSION.SDK_INT >= 29 -> Color.Transparent.toArgb()
-        Build.VERSION.SDK_INT >= 26 -> Color(0xFF, 0xFF, 0xFF, 0x63).toArgb()
-        // Min sdk version for this app is 24, this block is for SDK versions 24 and 25
-        else -> Color(0x00,0x00, 0x00, 0x50).toArgb()
+        Build.VERSION.SDK_INT >= 29 -> Color.Transparent.toArgb() // transparan untuk android 10+
+        Build.VERSION.SDK_INT >= 26 -> Color(0xFF, 0xFF, 0xFF, 0x63).toArgb() 
+        // semi-transparan untuk android 8.0-9.0
+        else -> Color(0x00,0x00, 0x00, 0x50).toArgb() // semi-transparan untuk versi sdk 24 dan 25
     }
-    window.navigationBarColor = navigationBarColor
-    val controller = WindowCompat.getInsetsController(window, view)
-    controller.isAppearanceLightStatusBars = !darkTheme
-    controller.isAppearanceLightNavigationBars = !darkTheme
+    window.navigationBarColor = navigationBarColor // atur warna bar navigasi
+    val controller = WindowCompat.getInsetsController(window, view) // ambil controller untuk mengatur tampilan inset
+    controller.isAppearanceLightStatusBars = !darkTheme // atur warna jadi terang
+    controller.isAppearanceLightNavigationBars = !darkTheme // atur warna jadi gelap
 }
