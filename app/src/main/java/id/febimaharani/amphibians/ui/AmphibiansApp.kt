@@ -15,32 +15,32 @@ import id.febimaharani.amphibians.R
 import id.febimaharani.amphibians.ui.screens.AmphibiansViewModel
 import id.febimaharani.amphibians.ui.screens.HomeScreen
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class) 
 @Composable
-fun AmphibiansApp() {
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
+fun AmphibiansApp() { // menyusun tampilan menggunakan scaffold
+    Scaffold( 
+        modifier = Modifier.fillMaxSize(), // ukuran max layar
+        topBar = { // mengatur topappbar  bagian atas aplikasi
             TopAppBar(
                 title = {
                     Text(
-                        stringResource(R.string.app_name),
-                        style = MaterialTheme.typography.headlineMedium
+                        stringResource(R.string.app_name), // menampilkan nama aplikasi dari string
+                        style = MaterialTheme.typography.headlineMedium // mengatur gaya text judul
                     )
                 }
             )
         }
     ) {
         Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
+            modifier = Modifier.fillMaxSize(), mengisi ukuran maksimum layar konten
+            color = MaterialTheme.colorScheme.background // mengatur warna background ssesuai tema
         ) {
             val amphibiansViewModel: AmphibiansViewModel =
-                viewModel(factory = AmphibiansViewModel.Factory)
-            HomeScreen(
-                amphibiansUiState = amphibiansViewModel.amphibiansUiState,
-                retryAction = amphibiansViewModel::getAmphibians,
-                modifier = Modifier.fillMaxSize(),
+                viewModel(factory = AmphibiansViewModel.Factory) // mengambil instance ViewModel 
+            HomeScreen( // menampilkann HomeScreen dengan statuts UI ViewModel dari aksi retry
+                amphibiansUiState = amphibiansViewModel.amphibiansUiState, // status UI layar beranda
+                retryAction = amphibiansViewModel::getAmphibians, // coba ambil data lagi
+                modifier = Modifier.fillMaxSize(),// mengisi ukuran maks layar homescreen
                 contentPadding = it
             )
         }
