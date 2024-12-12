@@ -15,51 +15,46 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
-/**
- * UI state for the Home screen
- */
-// 
+// status UI untuk layar beranda 
 sealed interface AmphibiansUiState {
-    data class Success(val amphibians: List<Amphibian>) : AmphibiansUiState
-    object Error : AmphibiansUiState
-    object Loading : AmphibiansUiState
+    data class Success(val amphibians: List<Amphibian>) : AmphibiansUiState // status berhasil dengan daftar amphibian
+    object Error : AmphibiansUiState // status error saat mengambil data
+    object Loading : AmphibiansUiState // status loading saat mengambil data
 }
 
-/**
- * ViewModel containing the app data and method to retrieve the data
- */
+// viewmodel berisi data aplikasi dan metode untuk mengambil data
 class AmphibiansViewModel(private val amphibiansRepository: AmphibiansRepository) : ViewModel() {
 
     var amphibiansUiState: AmphibiansUiState by mutableStateOf(AmphibiansUiState.Loading)
-        private set
+        private set // status UI yang bisa berubah dimulai dari status Loading
 
     init {
-        getAmphibians()
+        getAmphibians() // memanggil metode untuk mengambil data amphibian saat viewmodel diinisialisasi.
     }
 
     fun getAmphibians() {
         viewModelScope.launch {
-            amphibiansUiState = AmphibiansUiState.Loading
+            amphibiansUiState = AmphibiansUiState.Loading // mengatur status UI menjadi loading saat mengambil data
             amphibiansUiState = try {
-                AmphibiansUiState.Success(amphibiansRepository.getAmphibians())
+                AmphibiansUiState.Success(amphibiansRepository.getAmphibians()) // mengambil data dan mengatur status menjadi sucsess jika berhasil
             } catch (e: IOException) {
-                AmphibiansUiState.Error
+                AmphibiansUiState.Error // status menjadi error jika terjadi IOExcecption
             } catch (e: HttpException) {
-                AmphibiansUiState.Error
+                AmphibiansUiState.Error // status menjadi eror jika terjadi HttpException 
             }
         }
     }
 
     /**
-     * Factory for [AmphibiansViewModel] that takes [AmphibiansRepository] as a dependency
+     * Factory untuk [AmphibiansViewModel] mengambil [AmphibiansRepository] sebagai dependency
      */
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY]
                         as AmphibiansApplication)
-                val amphibiansRepository = application.container.amphibiansRepository
-                AmphibiansViewModel(amphibiansRepository = amphibiansRepository)
+                val amphibiansRepository = application.container.amphibiansRepository // mengambil repository dari container aplikasi
+                AmphibiansViewModel(amphibiansRepository = amphibiansRepository) // inisialisasi viewmodel dengan repository
             }
         }
     }
