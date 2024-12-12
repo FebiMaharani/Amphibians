@@ -41,7 +41,7 @@ fun HomeScreen(
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
     when (amphibiansUiState) {
-        is AmphibiansUiState.Loading -> LoadingScreen(modifier.size(200.dp))
+        is AmphibiansUiState.Loading -> LoadingScreen(modifier.size(200.dp)) // menampilkan loading di layar saat mengambil data
         is AmphibiansUiState.Success ->
             AmphibiansListScreen(
                 amphibians = amphibiansUiState.amphibians,
@@ -51,37 +51,33 @@ fun HomeScreen(
                         top = dimensionResource(R.dimen.padding_medium),
                         end = dimensionResource(R.dimen.padding_medium)
                     ),
-                contentPadding = contentPadding
+                contentPadding = contentPadding // menampilkan daftar amphiibian saat data berhasil di ambil
             )
-        else -> ErrorScreen(retryAction, modifier)
+        else -> ErrorScreen(retryAction, modifier) // menampilkan eroor di layar saat terjadi saat salah ambil data.
     }
 }
 
-/**
- * The home screen displaying the loading message.
- */
+// layar yang menampilkan pesan loading
 @Composable
 fun LoadingScreen(modifier: Modifier = Modifier) {
-    Image(
+    Image( // menampilkan gambar loading saat ambil data
         painter = painterResource(R.drawable.loading_img),
         contentDescription = stringResource(R.string.loading),
         modifier = modifier
     )
 }
 
-/**
- * The home screen displaying error message with re-attempt button.
- */
+// layar menampilkan pesan eror dengan tombol coba  lagi
 @Composable
 fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
-    Column(
+    Column( 
         modifier = modifier,
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally // menyusunn elemen secara vertikal dan horizontal.
     ) {
-        Text(stringResource(R.string.loading_failed))
+        Text(stringResource(R.string.loading_failed)) // menampilkan pesan kesalahan saat gagal ambil data
         Button(onClick = retryAction) {
-            Text(stringResource(R.string.retry))
+            Text(stringResource(R.string.retry)) // tombol coba lagi untuk ambil data
         }
     }
 }
@@ -90,7 +86,7 @@ fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
 fun AmphibianCard(amphibian: Amphibian, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(8.dp) // membuat kartu dengan sudut bulat
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
@@ -100,7 +96,7 @@ fun AmphibianCard(amphibian: Amphibian, modifier: Modifier = Modifier) {
                     .padding(dimensionResource(R.dimen.padding_medium)),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Start
+                textAlign = TextAlign.Start //  menampilkkan nama dan tipe amphibian di bagian atas kartu..
             )
             AsyncImage(
                 modifier = Modifier.fillMaxWidth(),
@@ -110,13 +106,13 @@ fun AmphibianCard(amphibian: Amphibian, modifier: Modifier = Modifier) {
                     .build(),
                 contentDescription = null,
                 contentScale = ContentScale.FillWidth,
-                error = painterResource(id = R.drawable.ic_broken_image),
-                placeholder = painterResource(id = R.drawable.loading_img)
+                error = painterResource(id = R.drawable.ic_broken_image), // gambar yang tampil saat gagal menampilkan gambar amphibian
+                placeholder = painterResource(id = R.drawable.loading_img) // gambar placeholder saat memuat gambar
             )
             Text(
                 text = amphibian.description,
                 style = MaterialTheme.typography.titleMedium,
-                textAlign = TextAlign.Justify,
+                textAlign = TextAlign.Justify, // menampilkan deskripsi amphibian di bawah gambar
                 modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium))
             )
         }
@@ -132,15 +128,15 @@ private fun AmphibiansListScreen(
     LazyColumn(
         modifier = modifier,
         contentPadding = contentPadding,
-        verticalArrangement = Arrangement.spacedBy(24.dp)
+        verticalArrangement = Arrangement.spacedBy(24.dp) // mengatur jarak
     ) {
         items(
             items = amphibians,
             key = { amphibian ->
-                amphibian.name
+                amphibian.name // nama amphibian digunakan sebagai kunci unik
             }
         ) { amphibian ->
-            AmphibianCard(amphibian = amphibian, modifier = Modifier.fillMaxSize())
+            AmphibianCard(amphibian = amphibian, modifier = Modifier.fillMaxSize()) // menampilkan kartu setiap amphibian dalam daftar
         }
     }
 }
@@ -152,7 +148,7 @@ fun LoadingScreenPreview() {
         LoadingScreen(
             Modifier
                 .fillMaxSize()
-                .size(200.dp)
+                .size(200.dp) // preview layar loading
         )
     }
 }
@@ -161,7 +157,7 @@ fun LoadingScreenPreview() {
 @Composable
 fun ErrorScreenPreview() {
     AmphibiansTheme {
-        ErrorScreen({}, Modifier.fillMaxSize())
+        ErrorScreen({}, Modifier.fillMaxSize()) // preview layar error
     }
 }
 
@@ -177,9 +173,9 @@ fun AmphibiansListScreenPreview() {
                         " eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad" +
                         " minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip" +
                         " ex ea commodo consequat.",
-                imgSrc = ""
+                imgSrc = "" // preview layar daftar amphibian
             )
         }
-        AmphibiansListScreen(mockData, Modifier.fillMaxSize())
+        AmphibiansListScreen(mockData, Modifier.fillMaxSize()) // menampilkan daftar dengan data contoh
     }
 }
