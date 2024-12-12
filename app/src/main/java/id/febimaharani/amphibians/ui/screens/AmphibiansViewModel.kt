@@ -18,6 +18,7 @@ import java.io.IOException
 /**
  * UI state for the Home screen
  */
+// 
 sealed interface AmphibiansUiState {
     data class Success(val amphibians: List<Amphibian>) : AmphibiansUiState
     object Error : AmphibiansUiState
