@@ -12,15 +12,14 @@ import id.febimaharani.amphibians.ui.theme.AmphibiansTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        super.onCreate(savedInstanceState) // memanggil  metode onCreate dari superClass
         setContent {
-            AmphibiansTheme {
-                // A surface container using the 'background' color from the theme
+            AmphibiansTheme { // menerapkan tema aplikasi
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(), // isi maks ukuran layar
+                    color = MaterialTheme.colorScheme.background // atur warna background sesuai tema
                 ) {
-                    AmphibiansApp()
+                    AmphibiansApp() // menampilkan tampilan utama aplikasi.
                 }
             }
         }
