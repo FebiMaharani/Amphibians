@@ -17,19 +17,23 @@ import java.io.IOException
 
 // status UI untuk layar beranda 
 sealed interface AmphibiansUiState {
-    data class Success(val amphibians: List<Amphibian>) : AmphibiansUiState // status berhasil dengan daftar amphibian
-    object Error : AmphibiansUiState // status error saat mengambil data
-    object Loading : AmphibiansUiState // status loading saat mengambil data
+    // status berhasil dengan daftar amphibian
+    data class Success(val amphibians: List<Amphibian>) : AmphibiansUiState 
+    // status error saat mengambil data
+    object Error : AmphibiansUiState 
+    // status loading saat mengambil data
+    object Loading : AmphibiansUiState 
 }
 
 // viewmodel berisi data aplikasi dan metode untuk mengambil data
 class AmphibiansViewModel(private val amphibiansRepository: AmphibiansRepository) : ViewModel() {
 
     var amphibiansUiState: AmphibiansUiState by mutableStateOf(AmphibiansUiState.Loading)
-        private set // status UI yang bisa berubah dimulai dari status Loading
-
+        private set 
+        // status UI yang bisa berubah dimulai dari status Loading
     init {
-        getAmphibians() // memanggil metode untuk mengambil data amphibian saat viewmodel diinisialisasi.
+        getAmphibians() 
+        // memanggil metode untuk mengambil data amphibian saat viewmodel diinisialisasi.
     }
 
     fun getAmphibians() {
@@ -53,8 +57,10 @@ class AmphibiansViewModel(private val amphibiansRepository: AmphibiansRepository
             initializer {
                 val application = (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY]
                         as AmphibiansApplication)
-                val amphibiansRepository = application.container.amphibiansRepository // mengambil repository dari container aplikasi
-                AmphibiansViewModel(amphibiansRepository = amphibiansRepository) // inisialisasi viewmodel dengan repository
+                val amphibiansRepository = application.container.amphibiansRepository 
+                // mengambil repository dari container aplikasi
+                AmphibiansViewModel(amphibiansRepository = amphibiansRepository) 
+                // inisialisasi viewmodel dengan repository
             }
         }
     }
