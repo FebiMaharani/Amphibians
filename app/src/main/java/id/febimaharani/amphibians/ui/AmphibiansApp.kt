@@ -32,7 +32,7 @@ fun AmphibiansApp() { // menyusun tampilan menggunakan scaffold
         }
     ) {
         Surface(
-            modifier = Modifier.fillMaxSize(), mengisi ukuran maksimum layar konten
+            modifier = Modifier.fillMaxSize(), // mengisi ukuran maksimum layar konten
             color = MaterialTheme.colorScheme.background // mengatur warna background ssesuai tema
         ) {
             val amphibiansViewModel: AmphibiansViewModel =
